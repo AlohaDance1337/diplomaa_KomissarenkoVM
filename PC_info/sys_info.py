@@ -32,7 +32,6 @@ class SystemInfo:
     def get_disk_usage(self):
         partitions, info, disk_info = psutil.disk_partitions(), [], []
         for partition in partitions:
-
             info.append({partition.device: {"mountpoint": partition.mountpoint, "fstype": partition.fstype}})
             try:
                 partition_usage = psutil.disk_usage(partition.mountpoint)
@@ -43,6 +42,8 @@ class SystemInfo:
                     self.get_size(data) if isinstance(data, int) else f"{data}%"
                     for data in partition_usage
                 ])
-        return list(set(tuple(sorted(sub)) for sub in disk_info))
+        storage_info = list(set(tuple(sorted(sub)) for sub in disk_info))
+        
+        return [storage_info, info]
 
 
